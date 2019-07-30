@@ -13,6 +13,27 @@
  <script src="https://unpkg.com/react@15.4.2/dist/react.js"></script>
  <script src="https://unpkg.com/react-dom@15.4.2/dist/react-dom.js"></script>
  <script>
+
+    class IngredientsList extends React.Component {
+        renderListItem(ingredient, i)
+        {
+            return React.createElement("li", {key : i}, ingredient)
+        }
+        render()
+        {
+            return React.createElement("ul", {className: "Ingredients"},
+                this.props.items.map(this.renderListItem)
+            )
+        }
+    }
+
+    const ingredientsListStateless = ({items}) => 
+            React.createElement("ul", {className: "ingredients"},
+                items.map((ingredient, i) => 
+                    React.createElement("li", {key: i}, ingredient)
+                )
+            )
+            
     const ingredientsList = React.createClass({
         displayName: "IngredientsList",
         render()
@@ -24,6 +45,7 @@
             )
         }
     })
+
     const items = [
         "1 lb Salmon",
         "1 cup Pine Nut",
@@ -31,10 +53,29 @@
         "1 Yellow Squash",
         "1/2 cup Olive Oil",
     ]
-     ReactDOM.render(
-         React.createElement(ingredientsList, {items}, null)
+
+    var ingrdientsFactoryVar = React.DOM.ul(
+        { className: "Ingredients"},
+        items.map((ingredient, key) => 
+            React.DOM.li({key}, ingredient)
+        )
+    )
+
+    const ingredientsListFactory = ({items}) => 
+        React.createElement('ul', null, 
+        items.map((ingredient, i) =>
+            React.createElement('li', {key:i}, ingredient)
+        )
+    )
+
+    const ingredientsFactory = React.createFactory(ingredientsListFactory)
+
+    const { render } = ReactDOM;
+
+     render(
+        ingredientsFactory({items})
          , document.getElementById("react-container")
-         )
+    )
  </script>
 </body>
 </html>
